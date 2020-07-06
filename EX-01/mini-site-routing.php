@@ -9,12 +9,17 @@
     <a href="http://localhost:8888/ISSC%20-%202020/ISCC-2020-J09/EX-01/mini-site-routing.php?page=2">Page1</a>
     <a href="http://localhost:8888/ISSC%20-%202020/ISCC-2020-J09/EX-01/mini-site-routing.php?page=3">Page2</a>
     <a href="http://localhost:8888/ISSC%20-%202020/ISCC-2020-J09/EX-01/mini-site-routing.php?page=connexion">Connexion</a>
+<?php 
+session_start();
+if (session_status() == PHP_SESSION_ACTIVE)
+echo '<a href="http://localhost:8888/ISSC%20-%202020/ISCC-2020-J09/EX-01/mini-site-routing.php?page=admin">Admin</a>';
+?>
 </nav>
     </header>
     <h1>
         <?php
 
-        session_start();
+       
         if($_GET['page']==1){
             echo "Accueil !";
             include ('Accueil.php');
@@ -27,6 +32,9 @@
         elseif($_GET['page']=='connexion'){
             echo "Connexion !";
             include ('Connexion.php') ;
+        }
+        elseif($_GET['page']=='admin'){
+include('admin.php');
         }
         elseif($_GET['page']==3){
             echo "Page 3 !";
