@@ -1,51 +1,42 @@
-<html>
-
-<body>
 
 <?php
 
-session_start();
-if($_SESSION['image']['size']>2097152){
-    $error="Le fichier est trop lourd";
-    echo $_SESSION['image']['size'];
-    echo " octets";
-};
-$findme='.';
- $position=strpos($_SESSION['image']['name'],$findme);
- echo $position;
- $longueur=strlen($_SESSION['image']['name'])-$position;
- $extension=substr($_SESSION['image']['name'],0,$longueur);
- $tailleextension=strlen($extension);
-if($extension!='.jpg' ||'.jpeg'||'.png'){ 
-$error="L'extension de votre fichier n'est pas acceptée.";
+if ($_FILES['userfile']['name']) {
+    
+    if (strlen(explode('.', $_FILES['userfile']['name'])[0]) < 5) {
+        echo "Le nom du fichier doit faire plus de 4 caractères hors extension. ";
+        
+    }
+    else {
+        $extention = explode('.', $_FILES['userfile']['name'])[1];
+        $extention_possible = array("jpg", "jpeg", "png", "JPG", "JPEG", "PNG");
+        
+        if (in_array($extention, $extention_possible)) {
+            echo "<p><strong>Nom du fichier:</strong>" . $_FILES['userfile']['name'] . ".</p>";
+            echo "<p><strong>Type du fichier:</strong>" . $_FILES['userfile']['type'] . ".</p>";
+            echo "<p><strong>Taille du fichier:</strong>" . $_FILES['userfile']['size'] . ".</p>";
+            $_SESSION['description'] = $_POST['description'];
+            $_SESSION['titre'] = $_POST['titre'];
+        } else {
+            echo "Le fichier ne correspond pas aux attentes.";
+        }
+    }
 }
 
-$nom=strlen($_SESSION['image']['name']);
-$taillenom = $nom-$taillextension;
-if($taillenom <=4){
-    echo 'Nombre de caractères : '.$taillenom.'';
-    echo "Le nom de l'image soit faire minimum 4 caractères hors extension.";
+$dossier='/fichier/';
+foreach($_FILES as $fichier){
+    $dossier=$_SERVER['DOCUMENT_ROOT']. 'h]tml/upload/fichiers/';
+    $fitch=$fichier['name'];
+
+    if(move_uploaded_file(($fichier['tmp_name']),$dossier.$fitch))
+    {
+        echo "Upload effectué avec succès pour le fichier";
+    }
+    else
+    {
+    echo "Echec du téléchargement du fichier"  ; 
+    }
 }
 
-?>
-<div>
-    <p>
-        <?php if(isset($error)) echo $error; ?>
-    </p>
-</div>
-    <form method="post" enctype="multipart/form-data">
-<input type="file" name="image">
-<input type="texte" name="titre" placeholder="Titre de la photo">
-<input type="texte" name="description" placeholder="description de la photo">
-<input type="submit" name="bouton" value="Charger">
-    </form>
-
-<?php
-echo $_SESSION['image'];
-echo $_SESSION['titre'];
-echo $_SESSION['description'];
 
 ?>
-</body>
-
-</html>
