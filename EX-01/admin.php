@@ -1,16 +1,13 @@
-
 <?php
 
 if ($_FILES['userfile']['name']) {
-    
+
     if (strlen(explode('.', $_FILES['userfile']['name'])[0]) < 5) {
         echo "Le nom du fichier doit faire plus de 4 caractères hors extension. ";
-        
-    }
-    else {
+    } else {
         $extention = explode('.', $_FILES['userfile']['name'])[1];
         $extention_possible = array("jpg", "jpeg", "png", "JPG", "JPEG", "PNG");
-        
+
         if (in_array($extention, $extention_possible)) {
             echo "<p><strong>Nom du fichier:</strong>" . $_FILES['userfile']['name'] . ".</p>";
             echo "<p><strong>Type du fichier:</strong>" . $_FILES['userfile']['type'] . ".</p>";
@@ -23,20 +20,22 @@ if ($_FILES['userfile']['name']) {
     }
 }
 
-$dossier='/fichier/';
-foreach($_FILES as $fichier){
-    $dossier=$_SERVER['DOCUMENT_ROOT']. 'h]tml/upload/fichiers/';
-    $fitch=$fichier['name'];
-
-    if(move_uploaded_file(($fichier['tmp_name']),$dossier.$fitch))
-    {
-        echo "Upload effectué avec succès pour le fichier";
-    }
-    else
-    {
-    echo "Echec du téléchargement du fichier"  ; 
+function upload_file($upload)
+{
+    if (isset($_FILES['userfile'])) {
+        $name_file = $_FILES['userfile']['name'];
+        $tmp_name = $_FILES['userfile']['tmp_name'];
+        $local_image = "uploaded/";
+        $upload = move_uploaded_file($tmp_name, $local_image . $name_file);
+        
+        
+        if ($upload) {
+            echo 'Le fichier <strong>' . $name_file . '</strong> a été téléchargé.';
+        } else {
+            echo 'Le téléchargement a échoué.';
+        }
     }
 }
 
-
+upload_file($upload);
 ?>
